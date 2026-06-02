@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="app">
+    <header class="app-header">
+        <h1>URL Shortener</h1>
+        <p>Create short links with expiration and analytics.</p>
+    </header>
+
+    <main class="app-main">
+        <section class="card">
+            <h2>Create Short URL</h2>
+            <form id="create-form">
+                <label class="field">
+                    <span>Original URL</span>
+                    <input id="url-input" type="url" placeholder="https://example.com/very/long/link" required />
+                </label>
+
+                <label class="field">
+                    <span>TTL (seconds, optional)</span>
+                    <input id="ttl-input" type="number" min="1" step="1" placeholder="3600" />
+                </label>
+
+                <button type="submit" class="btn-primary">Create</button>
+            </form>
+
+            <div id="create-result" class="result hidden"></div>
+        </section>
+
+        <section class="card">
+            <h2>Analytics</h2>
+            <form id="analytics-form">
+                <label class="field">
+                    <span>Short code</span>
+                    <input id="code-input" type="text" placeholder="Enter code, e.g. aZ3f" required />
+                </label>
+                <button type="submit" class="btn-secondary">Get Analytics</button>
+            </form>
+
+            <div id="analytics-result" class="result hidden"></div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <span>Backend: Spring Boot · DB: PostgreSQL</span>
+    </footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
+
