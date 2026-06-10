@@ -47,7 +47,7 @@ public class UrlController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/{code}")
+    @GetMapping("/r/{code}")
     public ResponseEntity<Void> redirect(@PathVariable("code") String code) {
         Optional<String> optional = shortUrlService.resolveAndIncrementOriginalUrl(code);
         if (optional.isEmpty()) {

@@ -1,40 +1,119 @@
-<<<<<<< HEAD
-# urlshortner
-Distributed URL shortener inspired by Bitly, built using Java and Spring Boot. Uses Base62 hashing for collision-free URLs, Redis for caching, and Kafka for event-driven analytics. Designed for high scalability, low latency, and efficient database access with PostgreSQL and Docker deployment.
-=======
-# URL Shortener (Java + Spring Boot)
+# 🚀 Distributed URL Shortener
 
-## Phase 1
-- Short URL generation
-- Redirect service
-- Expiration support
-- Analytics (click count)
+A scalable URL shortening service inspired by Bitly and TinyURL, built using Java, Spring Boot, PostgreSQL, Redis, Kafka, Docker, and NGINX.
 
-## Phase 2 (Scalability)
-- Redis caching (optional via `redis` profile)
-- DB indexing (JPA indexes)
-- Rate limiting (Redis-backed, in-memory fallback)
-- Load balancing simulation (Nginx + 2 app instances via Docker Compose)
+The project explores backend engineering concepts such as caching, asynchronous processing, rate limiting, database optimization, and load balancing.
 
-## Run locally (IntelliJ)
-1. Open the project folder.
-2. Run `UrlShortnerApplication`.
-3. Open UI at `http://localhost:8080/`.
+## Features
 
-## Enable Redis cache (optional)
-Start Redis, then run with:
-- `SPRING_PROFILES_ACTIVE=redis`
+### Core Features
 
-## Load balancing simulation (Docker)
-Requires Docker Desktop.
+* Generate short URLs using Base62 encoding
+* Redirect short URLs to original URLs
+* URL expiration support (TTL-based)
+* Click analytics tracking
 
-```bash
-docker compose up --build
+### Scalability Features
+
+* Redis caching for faster URL resolution
+* Database indexing for optimized lookups
+* API rate limiting to prevent abuse
+* NGINX load balancing simulation
+* Kafka-based asynchronous event logging
+
+## Tech Stack
+
+* Java 17
+* Spring Boot
+* PostgreSQL
+* Redis
+* Apache Kafka
+* Docker
+* NGINX
+* Maven
+
+# Architecture
+
+![System Architecture](diagrams/system_architecture.svg)
+The system uses NGINX for load balancing, Redis for low-latency URL resolution, PostgreSQL for persistence, and Kafka for asynchronous analytics processing.
+
+# Redirect Flow
+
+![Redirect Flow](diagrams/sequence_diagram.svg)
+Redirect requests follow a cache-aside strategy where Redis serves hot URLs and PostgreSQL is consulted only on cache misses.
+
+# Analytics Pipeline
+
+![Analytics Pipeline](diagrams/event_driven_analytics.svg)
+Analytics events are processed asynchronously through Kafka so that redirect latency remains unaffected by analytics workloads.
+
+
+## API Endpoints
+
+### Create Short URL
+
+POST `/api/urls`
+
+Request
+
+```json
+{
+  "url": "https://github.com",
+  "ttlSeconds": 86400
+}
 ```
 
-Then open:
-- `http://localhost:8080/`
+Response
 
-This goes through Nginx, load-balancing between `app1` and `app2`.
+```json
+{
+  "code": "abc123",
+  "shortUrl": "http://localhost:8080/abc123",
+  "originalUrl": "https://github.com",
+  "ttlSeconds": 86400
+}
+```
 
->>>>>>> d551f63 (initial commit)
+### Redirect
+
+GET `/{code}`
+
+Returns HTTP 308 Permanent Redirect.
+
+### Analytics
+
+GET `/api/urls/{code}`
+
+Returns click statistics and URL metadata.
+
+## Running Locally
+
+```bash
+docker-compose up -d
+mvn spring-boot:run
+```
+
+Application:
+
+http://localhost:8080
+
+## Key Learnings
+
+* Cache-aside pattern using Redis
+* Event-driven architecture using Kafka
+* Database indexing and query optimization
+* API rate limiting techniques
+* Load balancing concepts using NGINX
+* Building scalable backend systems with Spring Boot
+
+## Future Improvements
+
+* Distributed Redis cluster
+* Bloom filters
+* QR code generation
+* Kubernetes deployment
+* Multi-region support
+* Real-time analytics dashboard
+
+```
+```
